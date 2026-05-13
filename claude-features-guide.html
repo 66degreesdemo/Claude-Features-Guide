@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Features Guide - Complete</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0066ff;
+            --secondary: #7c3aed;
+            --accent: #ec4899;
+            --dark-bg: #0f0f1e;
+            --dark-surface: #1a1a2e;
+            --dark-surface-2: #252541;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0c0;
+            --border-color: #2d2d4a;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 102, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .header-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 56px;
+            font-weight: 400;
+            margin-bottom: 16px;
+            animation: fadeInDown 0.8s ease-out 0.1s both;
+            letter-spacing: -1px;
+        }
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        .env-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding: 0 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+        .env-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .env-tab:hover {
+            border-color: var(--primary);
+            color: var(--text-primary);
+        }
+        .env-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+            color: var(--text-primary);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 80px;
+            padding: 40px 20px;
+            animation: fadeInUp 0.6s ease-out 0.4s both;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, var(--dark-surface) 0%, var(--dark-surface-2) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px 24px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        .feature-card:hover::before {
+            left: 100%;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 102, 255, 0.15);
+        }
+        .feature-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+        .feature-badge.core {
+            background: rgba(0, 102, 255, 0.1);
+            color: #00d9ff;
+        }
+        .feature-badge.collab {
+            background: rgba(124, 58, 237, 0.1);
+            color: #c084fc;
+        }
+        .feature-badge.power {
+            background: rgba(236, 72, 153, 0.1);
+            color: #ff6b9d;
+        }
+        .feature-badge.settings {
+            background: rgba(34, 197, 94, 0.1);
+            color: #4ade80;
+        }
+        .feature-card h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+        .feature-hint {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 0;
+        }
+        .chevron {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            margin-left: 4px;
+        }
+        .feature-card:hover .chevron {
+            transform: translateX(4px);
+        }
+        .feature-card.expanded {
+            grid-column: 1 / -1;
+        }
+        .feature-content {
+            display: none;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+        .feature-card.expanded .feature-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            animation: fadeIn 0.4s ease-out;
+        }
+        .content-section h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--primary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .content-section p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        .laymans-term {
+            background: rgba(0, 102, 255, 0.05);
+            border-left: 3px solid var(--primary);
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            font-style: italic;
+        }
+        .examples-list {
+            list-style: none;
+            font-size: 13px;
+        }
+        .examples-list li {
+            padding: 6px 0;
+            color: var(--text-secondary);
+            border-left: 2px solid var(--primary);
+            padding-left: 12px;
+            transition: all 0.3s ease;
+        }
+        .examples-list li:hover {
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+        .close-btn {
+            grid-column: 1 / -1;
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: fit-content;
+            margin-top: 16px;
+        }
+        .close-btn:hover {
+            background: rgba(0, 102, 255, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        footer {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-top: 1px solid var(--border-color);
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 36px; }
+            .env-tabs { padding: 0; }
+            .feature-card { padding: 20px; }
+            .feature-card.expanded .feature-content { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <header>
+        <div class="header-badge">✨ Master Claude's Full Potential</div>
+        <h1>Claude Features Guide</h1>
+        <p class="subtitle">Click through features to learn what each does, in simple terms, and when to use it. Explore by environment to find what's right for your workflow.</p>
+    </header>
+    <div class="container">
+        <div class="env-tabs">
+            <button class="env-tab active" data-env="chat">Claude Chat</button>
+            <button class="env-tab" data-env="cowork">Claude CoWork</button>
+            <button class="env-tab" data-env="other">Claude Code</button>
+            <button class="env-tab" data-env="settings">Settings & Preferences</button>
+        </div>
+        <div class="features-grid" id="featuresGrid"></div>
+    </div>
+    <footer>
+        <p>💡 Explore each environment to discover features that match your workflow. Combine them for powerful results.</p>
+    </footer>
+    <script>
+        const features = {"chat":[{"id":"skills","name":"Skills","badge":"core","laymans":"Pre-made instruction templates that Claude automatically uses when they're relevant to your task.","what":"Reusable instruction and file bundles Claude automatically invokes when relevant. Think of them as specialized brains for different tasks—brand guides, coding standards, writing styles—that Claude applies without you asking.","when":"Use when you have repetitive tasks or want consistent results across conversations. Great for teams who need uniform brand voice, coding standards, or compliance requirements.","examples":["Brand voice & tone guidelines","Technical documentation standards","Code quality checkers","Compliance & legal templates","Creative writing frameworks"]},{"id":"artifacts","name":"Artifacts","badge":"core","laymans":"A side panel where Claude creates and displays interactive code, apps, documents, or visualizations you can edit and download.","what":"Rendered code, docs, HTML, and React components in an editable side panel. When Claude creates something substantial (an app, website, document, diagram), it appears here so you can see it, interact with it, and iterate.","when":"Use when Claude creates code snippets (20+ lines), full documents, interactive tools, or visualizations. Perfect for building calculators, dashboards, tutorials, or anything you might download or reuse.","examples":["Interactive calculators & converters","React apps and web components","Markdown guides & documentation","SVG diagrams & infographics","Games and simulations"]},{"id":"projects","name":"Projects","badge":"core","laymans":"A persistent workspace where files, context, and custom instructions stay organized across multiple conversations.","what":"A workspace with shared files and custom instructions that persist across conversations. Upload files once, add project-specific instructions, and Claude remembers them across all your chats in that project.","when":"Use for ongoing work—building a website, managing a project, working on a codebase. Keeps everything organized and prevents you from re-uploading files or re-explaining context.","examples":["Product development workflows","Coding projects & repositories","Writing & editing projects","Research & analysis projects","Team collaboration spaces"]},{"id":"connectors","name":"Connectors","badge":"core","laymans":"Live links to your other tools (Gmail, Drive, Slack, etc.) that let Claude read and act on your data directly.","what":"Live integrations with tools like Gmail, Drive, GitHub, Notion, and Slack. Claude can read your emails, access files, check tasks, and take actions directly in those tools.","when":"Use to automate workflows—let Claude summarize emails, create tasks, post updates, or pull information from connected services. Saves time on manual data pulling.","examples":["Summarize & search email threads","Create tasks in Notion or Asana","Check & manage calendar events","Read from Google Drive files","Post to Slack channels"]},{"id":"research","name":"Research","badge":"core","laymans":"Claude can search the web and your connected tools to gather information, then cite sources with links.","what":"Multi-source deep research across the web and connectors with citations. Claude searches for you, pulls real-time information, and shows you where it came from.","when":"Use when you need current information, competitive analysis, market research, or comprehensive backgrounding on a topic. Much faster than googling yourself.","examples":["Current news & trends research","Competitive market analysis","Product & pricing comparisons","Academic & technical research","Industry benchmarking"]},{"id":"voice-mode","name":"Voice Mode","badge":"core","laymans":"Talk to Claude out loud instead of typing. Works on mobile devices.","what":"Spoken conversation capability on mobile devices. Speak your question or request, and Claude responds verbally.","when":"Use when multitasking, hands-free input, or just prefer talking. Great for getting quick answers while commuting or cooking.","examples":["Dictating long-form writing","Quick factual questions on-the-go","Brainstorming sessions","Hands-free work instructions","Reading back results aloud"]},{"id":"share-publish","name":"Share & Publish","badge":"core","laymans":"Turn conversations or artifacts into shareable links so others can view or interact with them.","what":"Share conversations or publish artifacts as public links. Others can view your work, replay your conversation, or interact with your published tools.","when":"Use to share results with non-Claude users, document your work, or publish interactive tools. Great for portfolios, demos, and collaboration.","examples":["Share interactive tools publicly","Publish educational content","Portfolio demonstrations","Collaboration links","Public documentation"]},{"id":"use-style","name":"Use Style","badge":"core","laymans":"Choose how Claude sounds—formal, casual, concise, or create custom tone preferences.","what":"Tone and voice presets (formal, concise, explanatory, etc.) or custom styles. Set once, and Claude adapts its communication to match.","when":"Use to ensure consistent communication style. Set for professional emails, casual brainstorming, technical writing, or any specific tone you need.","examples":["Professional business writing","Casual & friendly tone","Concise & direct summaries","Explanatory & educational style","Custom brand voice"]},{"id":"model-picker","name":"Model Picker","badge":"core","laymans":"Choose between different versions of Claude—Opus (most powerful), Sonnet (balanced), or Haiku (fastest)—and toggle thinking features.","what":"Choose between Opus (most capable), Sonnet (balanced), or Haiku (fastest); includes extended thinking toggle for complex problem-solving.","when":"Use Haiku for quick tasks, Sonnet for most work, Opus for complex reasoning. Use extended thinking when you need Claude to think harder on difficult problems.","examples":["Quick lookup → Haiku","Most tasks → Sonnet","Complex reasoning → Opus","Deep analysis → Opus + Extended Thinking","Code review → Sonnet"]}],"cowork":[{"id":"cowork-projects","name":"Projects","badge":"collab","laymans":"Shared agent workspaces where teams can set up files, context, and work together with Claude.","what":"Shared agent workspaces featuring context, files, and team members. Build a collaborative space where agents and humans work together on projects.","when":"Use for team workflows, automation projects, and when you need multiple people coordinating around Claude-assisted work.","examples":["Team automation projects","Shared content workflows","Collaborative development","Multi-person research projects","Coordinated task management"]},{"id":"scheduled","name":"Scheduled Tasks","badge":"collab","laymans":"Set Claude agents to run automatically on a schedule (daily, weekly, etc.) without you triggering them.","what":"Cron-style routines that run agents on a set schedule. Automate recurring tasks to run daily, weekly, monthly, or on custom schedules.","when":"Use for repetitive automation—daily reports, weekly summaries, scheduled emails, batch processing, or routine checks.","examples":["Daily email summaries","Weekly team reports","Monthly data backups","Scheduled data processing","Recurring compliance checks"]},{"id":"live-artifacts","name":"Live Artifacts","badge":"collab","laymans":"Real-time collaborative documents and apps that agents and team members can edit together simultaneously.","what":"Persistent, collaborative artifacts that agents and humans co-edit in real-time. See changes as they happen.","when":"Use for collaborative document editing, shared dashboards, or when teams need to work on the same artifact together.","examples":["Shared documentation","Collaborative dashboards","Team spreadsheets","Real-time planning docs","Shared knowledge bases"]},{"id":"cowork-plugins","name":"Plugins","badge":"collab","laymans":"Add-ons that extend CoWork with custom skills, commands, or integrations packaged for your team's workflow.","what":"Packaged extensions (skills, commands, or MCP) installable into the workspace. Extend CoWork with custom tools your team needs.","when":"Use to customize CoWork for your team's specific needs, add domain-specific tools, or integrate with internal systems.","examples":["Custom team commands","Domain-specific skills","Internal integrations","Workflow automations","Team utilities & tools"]}],"other":[{"id":"claude-code","name":"Claude Code","badge":"power","laymans":"A terminal-based AI coding agent that works in your command line with advanced features like sub-agents and planning.","what":"Terminal-native coding agent with subagents, hooks, and plan mode. A powerful CLI tool for developers who want Claude directly in their terminal.","when":"Use if you're a developer who prefers command-line workflows or needs deep integration with your development environment.","examples":["Automated code generation","Multi-file refactoring","CI/CD pipeline integration","Script automation","Complex debugging workflows"]}],"settings":[{"id":"memory","name":"Memory","badge":"settings","laymans":"Tell Claude things once (your style, preferences, context), and it remembers across all future conversations.","what":"Persistent facts about you carried across all conversations. Claude remembers your preferences, constraints, and context automatically.","when":"Use to avoid repeating yourself. Set once: your writing style, timezone, project context, role, or any preferences you want Claude to always know.","examples":["Your writing style & tone","Project context & background","Technical preferences","Personal constraints & goals","Role & responsibilities"]},{"id":"instructions","name":"Instructions for Claude","badge":"settings","laymans":"Set rules or guidelines that Claude follows across all your chats and projects.","what":"Claude will keep these instructions in mind across chats and CoWork sessions. Your own system prompt.","when":"Use for consistent behavior preferences—how you want Claude to approach problems, what format you prefer, or rules to follow.","examples":["Response format preferences","Communication style rules","Analysis frameworks to use","Ethical guidelines","Custom workflow procedures"]},{"id":"usage","name":"Usage","badge":"settings","laymans":"See how many tokens (think: words processed) you've used today and this week.","what":"Shows how much of your token limits you have used for the day and week. Track your subscription usage.","when":"Check to stay aware of your usage and avoid running out of tokens. Helps plan long conversations or batch tasks.","examples":["Monitor daily usage","Plan large projects","Track team usage","Budget conversations","Understand limits"]},{"id":"ai-powered-artifacts","name":"AI-Powered Artifacts","badge":"settings","laymans":"Let Claude build interactive apps and documents that use Claude's AI inside them—artifacts that think!","what":"Build apps and interactive documents that use Claude inside the artifact. Your tools can call Claude from within themselves.","when":"Use to create AI-native applications—tools that aren't just displaying Claude's output, but are actually using Claude's intelligence internally.","examples":["Smart recommendation tools","AI-powered dashboards","Intelligent calculators","Interactive learning apps","Custom AI-native utilities"]},{"id":"inline-visualizations","name":"Inline Visualizations","badge":"settings","laymans":"Let Claude create charts, diagrams, and interactive visuals right in the chat (no artifacts needed).","what":"Allow Claude to generate interactive visualizations, charts, and diagrams directly in the conversation without using artifacts.","when":"Use to see data visualizations immediately without switching panels. Great for quick charts and exploratory data visualization.","examples":["Quick data charts","Process flows & diagrams","Timeline visualizations","Network diagrams","Comparison charts"]},{"id":"cowork-global-instructions","name":"CoWork Global Instructions","badge":"settings","laymans":"Set rules that apply to ALL your CoWork sessions automatically—team preferences and shared context.","what":"Instructions that apply to all CoWork sessions. Use for preferences, conventions, or context that Claude should always know in team spaces.","when":"Use for team-wide settings—shared coding standards, communication preferences, or context that applies to all team automation.","examples":["Team coding standards","Communication conventions","Shared project context","Team preferences","Compliance requirements"]},{"id":"voice-shortcut","name":"Voice Shortcut","badge":"settings","laymans":"Press a hotkey anywhere on your desktop to quickly talk to Claude without opening the app.","what":"Speak to Claude from anywhere on your desktop using a keyboard shortcut. Quick voice input without switching windows.","when":"Use for quick voice questions while working on other tasks. Faster than switching to the Claude app.","examples":["Quick factual questions","Quick code snippets","Ideas & brainstorming","Multitasking queries","Hands-free input"]}]};
+        const featuresGrid = document.getElementById('featuresGrid');
+        const envTabs = document.querySelectorAll('.env-tab');
+        let expandedId = null;
+        function createFeatureCard(feature, env) {
+            const card = document.createElement('div');
+            card.className = 'feature-card';
+            card.dataset.id = feature.id;
+            card.dataset.env = env;
+            const badgeText = feature.badge === 'core' ? '⚡ Core' : feature.badge === 'collab' ? '👥 Team' : feature.badge === 'power' ? '🚀 Advanced' : '⚙️ Settings';
+            card.innerHTML = `<span class="feature-badge ${feature.badge}">${badgeText}</span><h2>${feature.name}</h2><p class="feature-hint">Click to learn more <span class="chevron">→</span></p><div class="feature-content"><div class="content-section"><h3>In Plain English</h3><div class="laymans-term">${feature.laymans}</div></div><div class="content-section"><h3>What It Really Does</h3><p>${feature.what}</p></div><div class="content-section"><h3>When to Use It</h3><p>${feature.when}</p></div><div class="content-section"><h3>Real Use Cases</h3><ul class="examples-list">${feature.examples.map(ex => `<li>✓ ${ex}</li>`).join('')}</ul></div><button class="close-btn">← Close</button></div>`;
+            const toggleCard = () => {
+                if (expandedId === feature.id) {
+                    card.classList.remove('expanded');
+                    expandedId = null;
+                } else {
+                    const prevCard = document.querySelector('[data-id="' + expandedId + '"]');
+                    if (prevCard) prevCard.classList.remove('expanded');
+                    card.classList.add('expanded');
+                    expandedId = feature.id;
+                    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+                }
+            };
+            card.addEventListener('click', (e) => {
+                if (!card.classList.contains('expanded') || e.target.closest('.close-btn')) {
+                    toggleCard();
+                }
+            });
+            return card;
+        }
+        function renderEnv(env) {
+            featuresGrid.innerHTML = '';
+            if (features[env]) {
+                features[env].forEach(feature => {
+                    featuresGrid.appendChild(createFeatureCard(feature, env));
+                });
+            }
+        }
+        envTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                envTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderEnv(tab.dataset.env);
+            });
+        });
+        renderEnv('chat');
+    </script>
+</body>
+</html>
